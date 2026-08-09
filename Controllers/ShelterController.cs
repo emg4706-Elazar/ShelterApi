@@ -41,4 +41,11 @@ public class ShelterController : ControllerBase
     {
         return Ok(await _repo.GetAllInsppectionsAsync());
     }
+
+    [HttpGet("with-inspection-count")]
+    public async Task<ActionResult<IEnumerable
+        <ShelterWithInspectionCountDto>>> GetShelterWithInspectionsCount()
+    {
+        return Ok(await _repo.GetSheltersWithInspectionsCountAsync());
+    }
 }

@@ -13,6 +13,7 @@ public interface IShelterRepository
     Task<IEnumerable<ShelterSortedDto>> GetSortedSheltersAsync(
         string? sortBy, bool ascending = true);
     Task<IEnumerable<InspectionDetailedDto>> GetAllInsppectionsAsync();
-    //Task<IEnumerable<Shelter>> GetShelterWithInspectionsCountAsync();
+    Task<IEnumerable<ShelterWithInspectionCountDto>>
+        GetSheltersWithInspectionsCountAsync();
     //Task<IEnumerable<Inspection>> GetFailedInspectionsAsync();
 }

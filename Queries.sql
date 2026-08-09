@@ -15,3 +15,9 @@ SELECT `i`.`Id` AS `inspectionId`, `i`.`InspectionDate` AS `inspectionDate`, CAS
       FROM `Inspections` AS `i`
       INNER JOIN `Shelters` AS `s` ON `i`.`ShelterId` = `s`.`Id`
       INNER JOIN `Areas` AS `a` ON `s`.`AreaId` = `a`.`Id
+
+SELECT `s`.`Id` AS `shelterId`, `s`.`Name` AS `shelterName`, (
+          SELECT COUNT(*)
+          FROM `Inspections` AS `i`
+          WHERE `s`.`Id` = `i`.`ShelterId`) AS `inspectionCount`
+      FROM `Shelters` AS `s`

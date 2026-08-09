@@ -14,6 +14,7 @@ namespace ShelterApi.Repositories
             _context = context;
         }
 
+        // Get all shelters
         public async Task<IEnumerable<ShelterWithAreaDto>> GetAllSheltersAsync()
         {
             return await _context.Shelters.
@@ -27,6 +28,7 @@ namespace ShelterApi.Repositories
                 }).ToListAsync();
         }
 
+        // Search by filters
         public async Task<IEnumerable<ShelterSearchResultDto>> SearchAsync(
             string? city, int? minCapacity, bool isAccessible, bool isPublic)
         {
@@ -62,6 +64,7 @@ namespace ShelterApi.Repositories
             }).ToListAsync();
         }
 
+        // Get sorted shelters list
         public async Task<IEnumerable<ShelterSortedDto>> GetSortedSheltersAsync(
             string? sortBy, bool ascending=true)
         {
@@ -92,6 +95,7 @@ namespace ShelterApi.Repositories
             }).ToListAsync();
         }
 
+        // Get all inspections
         public async Task<IEnumerable<InspectionDetailedDto>>
             GetAllInsppectionsAsync()
         {
@@ -105,6 +109,19 @@ namespace ShelterApi.Repositories
                     shelterName = i.Shelter.Name,
                     city = i.Shelter.Area.City,
                     neighborhood = i.Shelter.Area.Neighborhood
+                }).ToListAsync();
+        }
+
+        // Get all shelters with there inspections count
+        public async Task<IEnumerable<ShelterWithInspectionCountDto>>
+            GetSheltersWithInspectionsCountAsync()
+        {
+            return await _context.Shelters
+                .Select(s => new ShelterWithInspectionCountDto
+                {
+                    shelterId = s.Id,
+                    shelterName = s.Name,
+                    inspectionCount = s.Inspections.Count
                 }).ToListAsync();
         }
     }
