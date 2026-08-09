@@ -124,5 +124,20 @@ namespace ShelterApi.Repositories
                     inspectionCount = s.Inspections.Count
                 }).ToListAsync();
         }
+
+        // Get only failed inspecitons
+        public async Task<IEnumerable<FailedInspectionDto>> GetFailedInspectionsAsync()
+        {
+            return await _context.Inspections.Where(i => !i.Passed)
+                .Select(i => new FailedInspectionDto
+                {
+                    inspectionId = i.Id,
+                    inspectionDate = i.InspectionDate,
+                    readinessScore = i.ReadinessScore,
+                    defectsCount = i.DefectsCount,
+                    shelterName = i.Shelter.Name,
+                    city = i.Shelter.Area.City
+                }).ToListAsync();
+        }
     }
 }

@@ -48,4 +48,11 @@ public class ShelterController : ControllerBase
     {
         return Ok(await _repo.GetSheltersWithInspectionsCountAsync());
     }
+
+    [HttpGet("failed")]
+    public async Task<ActionResult<IEnumerable<FailedInspectionDto>>>
+        GetFailedInspections()
+    {
+        return Ok(await _repo.GetFailedInspectionsAsync());
+    }
 }

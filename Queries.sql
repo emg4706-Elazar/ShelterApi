@@ -21,3 +21,9 @@ SELECT `s`.`Id` AS `shelterId`, `s`.`Name` AS `shelterName`, (
           FROM `Inspections` AS `i`
           WHERE `s`.`Id` = `i`.`ShelterId`) AS `inspectionCount`
       FROM `Shelters` AS `s`
+
+SELECT `i`.`Id` AS `inspectionId`, `i`.`InspectionDate` AS `inspectionDate`, CAST(`i`.`ReadinessScore` AS double) AS `readinessScore`, `i`.`DefectsCount` AS `defectsCount`, `s`.`Name` AS `shelterName`, `a`.`City` AS `city`
+      FROM `Inspections` AS `i`
+      INNER JOIN `Shelters` AS `s` ON `i`.`ShelterId` = `s`.`Id`
+      INNER JOIN `Areas` AS `a` ON `s`.`AreaId` = `a`.`Id`
+      WHERE NOT (`i`.`Passed`)
