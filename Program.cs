@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShelterApi.Data;
+using ShelterApi.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ options.UseMySql(connectionString,
 ServerVersion.AutoDetect(connectionString))
 );
 
+// Register Repository
+builder.Services.AddScoped<IShelterRepository, ShelterRepository>();
 
 var app = builder.Build();
 
