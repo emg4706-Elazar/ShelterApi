@@ -61,5 +61,51 @@ namespace ShelterApi.Repositories
                 city = s.Area.City
             }).ToListAsync();
         }
+
+        public async Task<IEnumerable<ShelterSortedDto>> GetSortedSheltersAsync(
+            string? sortBy, bool ascending=true)
+        {
+            var query = _context.Shelters.AsQueryable();
+
+            query = sortBy?.ToLower() switch
+            {
+                "capacity" => ascending ? query.OrderBy(s => s.Capacity) :
+                query.OrderByDescending(s => s.Capacity),
+
+                "city" => ascending ? query.OrderBy(s => s.Area.City):
+                query.OrderByDescending(s => s.Area.City),
+                
+                _ => ascending ? query.OrderBy(s => s.Name):
+                query.OrderByDescending(s => s.Name)
+            };
+
+            return await query.Select(s => new ShelterSortedDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Street = s.Street,
+                BuildingNumber = s.BuildingNumber,
+                Capacity = s.Capacity,
+                IsAccessible = s.IsAccessible,
+                IsPublic = s.IsPublic,
+                ShelterType = s.ShelterType
+            }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<InspectionDetailedDto>>
+            GetAllInsppectionsAsync()
+        {
+            return await _context.Inspections
+                .Select(i => new InspectionDetailedDto
+                {
+                    inspectionId = i.Id,
+                    inspectionDate = i.InspectionDate,
+                    readinessScore = i.ReadinessScore,
+                    passed = i.Passed,
+                    shelterName = i.Shelter.Name,
+                    city = i.Shelter.Area.City,
+                    neighborhood = i.Shelter.Area.Neighborhood
+                }).ToListAsync();
+        }
     }
 }
