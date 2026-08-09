@@ -8,6 +8,11 @@ public class Inspection
     public int Id { get; set; }
 
     [Required]
+    public int ShelterId { get; set; }
+
+    public Shelter Shelter { get; set; } = null!;
+
+    [Required]
     public DateTime InspectionDate { get; set; }
 
     [Range(0, 100)]
