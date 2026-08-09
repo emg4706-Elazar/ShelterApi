@@ -11,14 +11,18 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<Area> Areas { get; set; } = null!;
-    public DbSet<Shelter> Shelters { get; set; } = null!;
-    public DbSet<Inspection> Inspections { get; set; } = null!;
+    public DbSet<Area> Areas => Set<Area>(); // { get; set; } = null!;
+    public DbSet<Shelter> Shelters => Set<Shelter>(); // { get; set; } = null!;
+    public DbSet<Inspection> Inspections => Set<Inspection>();  //  { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Shelter>()
+            .Property(s => s.ShelterType)
+            .HasConversion<string>();
 
         modelBuilder.Entity<Shelter>()
             .HasOne(s => s.Area)
