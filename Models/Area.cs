@@ -16,6 +16,8 @@ public class Area
 
     [Required]
     [MaxLength(20)]
-    
+    public string AreaCode { get; set; } = string.Empty;
 
+    [Range(1, 5)]
+    public int RiskLevel { get; set; }
 }
