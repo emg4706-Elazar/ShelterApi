@@ -34,6 +34,6 @@ public class Shelter
     public bool IsPublic { get; set; }
 
     [Required]
-    [MaxLength(50)]
     public ShelterTypes ShelterType { get; set; }
+    public ICollection<Inspection> Inspections { get; set; } = null!;
 }
