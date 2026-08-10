@@ -2,6 +2,8 @@
 using ShelterApi.Models;
 using ShelterApi.DTOs;
 using Microsoft.EntityFrameworkCore;
+using ShelterApi.Enums;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace ShelterApi.Repositories
 {
@@ -141,7 +143,7 @@ namespace ShelterApi.Repositories
         }
 
         // Get Statistics for area
-        public async Task<IEnumerable<AreaStatisticsDto>> GetAreaStatistics()
+        public async Task<IEnumerable<AreaStatisticsDto>> GetAreaStatisticsAsync()
         {
             return await _context.Areas
                 .Select(a => new AreaStatisticsDto
@@ -151,6 +153,51 @@ namespace ShelterApi.Repositories
                     shelterCount = a.Shelters.Count,
                     totalCapacity = a.Shelters.Sum(s => s.Capacity)
                 }).ToListAsync();
+        }
+
+        // Get average score by type
+        public async Task<IEnumerable<ShelterTypeAverageDto>>
+            GetAverageScoreByTypeAsync(ShelterTypes shelterType)
+        {
+            return await _context.Shelters
+                .GroupBy(s => s.ShelterType)
+                .Select(s => new ShelterTypeAverageDto
+                {
+                    shelterType = s.Key,
+                    averageReadinessScore = s.
+                    SelectMany(s => s.Inspections)
+                    .Average(i => i.ReadinessScore),
+                    totalInspections = s.Sum(s => s.Inspections.Count)
+
+                }).ToListAsync();
+        }
+
+        public async Task<PagedResultDto<ShelterWithAreaDto>>
+            GetPagedAsync(int page, int pageSize)
+        {
+            var total = await _context.Shelters.CountAsync();
+
+            var items = await _context.Shelters
+                .OrderBy(s => s.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(s => new ShelterWithAreaDto
+                {
+                    shelterId = s.Id,
+                    shelterName = s.Name,
+                    capacity = s.Capacity,
+                    city = s.Area.City,
+                    neighborhood = s.Area.Neighborhood
+                }).ToListAsync();
+
+            return new PagedResultDto<ShelterWithAreaDto>
+            {
+                Items = items,
+                totalCount = total,
+                page = page,
+                pageSize = pageSize,
+                totalPages = pageSize > 0 ? total / pageSize: 0
+            };
         }
     }
 }
