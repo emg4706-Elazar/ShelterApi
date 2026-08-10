@@ -139,5 +139,18 @@ namespace ShelterApi.Repositories
                     city = i.Shelter.Area.City
                 }).ToListAsync();
         }
+
+        // Get Statistics for area
+        public async Task<IEnumerable<AreaStatisticsDto>> GetAreaStatistics()
+        {
+            return await _context.Areas
+                .Select(a => new AreaStatisticsDto
+                {
+                    city = a.City,
+                    neighborhood = a.Neighborhood,
+                    shelterCount = a.Shelters.Count,
+                    totalCapacity = a.Shelters.Sum(s => s.Capacity)
+                }).ToListAsync();
+        }
     }
 }

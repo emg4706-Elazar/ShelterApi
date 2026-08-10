@@ -55,4 +55,10 @@ public class ShelterController : ControllerBase
     {
         return Ok(await _repo.GetFailedInspectionsAsync());
     }
+
+    [HttpGet("statistics")]
+     public async Task<ActionResult<IEnumerable<AreaStatisticsDto>>> GetAreaStatistics()
+    {
+        return Ok(await _repo.GetAreaStatistics());
+    }
 }

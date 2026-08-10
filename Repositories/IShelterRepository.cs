@@ -16,4 +16,5 @@ public interface IShelterRepository
     Task<IEnumerable<ShelterWithInspectionCountDto>>
         GetSheltersWithInspectionsCountAsync();
     Task<IEnumerable<FailedInspectionDto>> GetFailedInspectionsAsync();
+    Task<IEnumerable<AreaStatisticsDto>> GetAreaStatistics();
 }

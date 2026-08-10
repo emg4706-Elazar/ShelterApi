@@ -27,3 +27,12 @@ SELECT `i`.`Id` AS `inspectionId`, `i`.`InspectionDate` AS `inspectionDate`, CAS
       INNER JOIN `Shelters` AS `s` ON `i`.`ShelterId` = `s`.`Id`
       INNER JOIN `Areas` AS `a` ON `s`.`AreaId` = `a`.`Id`
       WHERE NOT (`i`.`Passed`)
+
+SELECT `a`.`City` AS `city`, `a`.`Neighborhood` AS `neighborhood`, (
+          SELECT COUNT(*)
+          FROM `Shelters` AS `s`
+          WHERE `a`.`Id` = `s`.`AreaId`) AS `shelterCount`, (
+          SELECT COALESCE(SUM(`s0`.`Capacity`), 0)
+          FROM `Shelters` AS `s0`
+          WHERE `a`.`Id` = `s0`.`AreaId`) AS `totalCapacity`
+      FROM `Areas` AS `a`
