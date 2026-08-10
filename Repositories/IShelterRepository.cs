@@ -1,6 +1,7 @@
 ﻿
 
 using ShelterApi.DTOs;
+using ShelterApi.Enums;
 using ShelterApi.Models;
 
 namespace ShelterApi.Repositories;
@@ -16,4 +17,8 @@ public interface IShelterRepository
     Task<IEnumerable<ShelterWithInspectionCountDto>>
         GetSheltersWithInspectionsCountAsync();
     Task<IEnumerable<FailedInspectionDto>> GetFailedInspectionsAsync();
+    Task<IEnumerable<AreaStatisticsDto>> GetAreaStatisticsAsync();
+    Task<IEnumerable<ShelterTypeAverageDto>>
+        GetAverageScoreByTypeAsync(ShelterTypes shelterType);
+    Task<PagedResultDto<ShelterWithAreaDto>> GetPagedAsync(int page, int pageSize);
 }

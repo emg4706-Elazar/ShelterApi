@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShelterApi.DTOs;
+using ShelterApi.Enums;
 using ShelterApi.Models;
 using ShelterApi.Repositories;
 
@@ -54,5 +55,25 @@ public class ShelterController : ControllerBase
         GetFailedInspections()
     {
         return Ok(await _repo.GetFailedInspectionsAsync());
+    }
+
+    [HttpGet("statistics")]
+     public async Task<ActionResult<IEnumerable<AreaStatisticsDto>>> GetAreaStatistics()
+    {
+        return Ok(await _repo.GetAreaStatisticsAsync());
+    }
+
+    [HttpGet("average-score-by-type")]
+    public async Task<ActionResult<IEnumerable<ShelterTypeAverageDto>>>
+            GetAverageScoreByType(ShelterTypes shelterType)
+    {
+        return Ok(await _repo.GetAverageScoreByTypeAsync(shelterType));
+    }
+
+    [HttpGet("paged")]
+    public async Task<ActionResult<PagedResultDto<ShelterWithAreaDto>>>
+        GetPagedAsync(int page, int pageSize)
+    {
+        return Ok(await _repo.GetPagedAsync(page, pageSize));
     }
 }
